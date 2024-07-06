@@ -175,26 +175,18 @@ end
 
 -- check if there are matches in the current board
 function Board:matchesAvailable()
-    matchExit = false
+    local matchExit = false
 
     for y = 1, 8 do
         local colorToMatch = self.tiles[y][1].color
 
         for x = 2, 8 do
-            if self.tiles[y + 1] and (self.tiles[y + 1][x - 1] and self.tiles[y + 1][x - 1].color == colorToMatch) and
-                (self.tiles[y + 1][x + 1] and self.tiles[y + 1][x + 1].color == colorToMatch)
-            then
-                matchExit = true
-            elseif self.tiles[y - 1] and (self.tiles[y - 1][x - 1] and self.tiles[y - 1][x - 1].color == colorToMatch) and
-                (self.tiles[y - 1][x + 1] and self.tiles[y - 1][x + 1].color == colorToMatch)
-            then
-                matchExit = true
-            elseif (self.tiles[y][x - 1] and self.tiles[y][x - 1].color == colorToMatch) and
+            if (self.tiles[y][x + 1] and self.tiles[y][x + 1].color == colorToMatch) and
                 (self.tiles[y][x + 2] and self.tiles[y][x + 2].color == colorToMatch)
             then
                 matchExit = true
-            elseif (self.tiles[y][x - 1] and self.tiles[y][x - 1].color == colorToMatch) and
-                (self.tiles[y][x - 2] and self.tiles[y][x - 2])
+            elseif self.tiles[y][x - 2] and self.tiles[y][x - 3] and (self.tiles[y][x - 3].color == colorToMatch) and
+                (self.tiles[y][x - 2].color == colorToMatch)
             then
                 matchExit = true
             else
@@ -208,20 +200,12 @@ function Board:matchesAvailable()
 
 
         for y = 2, 8 do
-            if self.tiles[y + 1] and (self.tiles[y + 1][x - 1] and self.tiles[y + 1][x - 1].color == colorToMatch) and
-                (self.tiles[y + 1][x + 1] and self.tiles[y + 1][x + 1].color == colorToMatch)
-            then
-                matchExit = true
-            elseif self.tiles[y - 1] and (self.tiles[y - 1][x - 1] and self.tiles[y - 1][x - 1].color == colorToMatch) and
-                (self.tiles[y - 1][x + 1] and self.tiles[y - 1][x + 1].color == colorToMatch)
-            then
-                matchExit = true
-            elseif (self.tiles[y][x - 1] and self.tiles[y][x - 1].color == colorToMatch) and
+            if (self.tiles[y][x + 1] and self.tiles[y][x + 1].color == colorToMatch) and
                 (self.tiles[y][x + 2] and self.tiles[y][x + 2].color == colorToMatch)
             then
                 matchExit = true
-            elseif (self.tiles[y][x - 1] and self.tiles[y][x - 1].color == colorToMatch) and
-                (self.tiles[y][x - 2] and self.tiles[y][x - 2])
+            elseif self.tiles[y][x - 2] and self.tiles[y][x - 3] and (self.tiles[y][x - 3].color == colorToMatch) and
+                (self.tiles[y][x - 2].color == colorToMatch)
             then
                 matchExit = true
             else
