@@ -71,6 +71,11 @@ function PlayState:enter(params)
 end
 
 function PlayState:update(dt)
+
+    if not (self.board:matchesAvailable()) then
+        self.board = Board(VIRTUAL_WIDTH - 272, 16)
+    end
+
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
@@ -191,7 +196,7 @@ function PlayState:calculateMatches(newTile)
     if matches then
         gSounds['match']:stop()
         gSounds['match']:play()
-        self.timer = self.timer + 10
+        self.timer = self.timer + 1
 
         -- add score for each match
         for k, match in pairs(matches) do
