@@ -31,7 +31,7 @@ function Board:initializeTiles()
 
         for tileX = 1, 8 do
             -- create a new tile at X,Y with a random color and variety
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), self.level * 1))
+            table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(9), math.random(self.level * 1)))
         end
     end
 
@@ -69,9 +69,13 @@ function Board:calculateMatches()
                 colorToMatch = self.tiles[y][x].color
 
                 -- if we have a match of 3 or more up to now, add it to our matches table
-                if matchNum >= 3 then
-                    local match = {}
-
+                local match = {}
+                if matchNum >= 4 then
+                    for x2 = 8, 1, -1 do
+                        table.insert(match, self.tiles[y][x2])
+                    end
+                    table.insert(matches, match)
+                elseif matchNum == 3 then
                     -- go backwards from here by matchNum
                     for x2 = x - 1, x - matchNum, -1 do
                         -- add each tile to the match that's in that match
@@ -92,9 +96,14 @@ function Board:calculateMatches()
         end
 
         -- account for the last row ending with a match
-        if matchNum >= 3 then
-            local match = {}
+        local match = {}
+        if matchNum >= 4 then
+            for x = 8, 1, -1 do
+                table.insert(match, self.tiles[y][x])
+            end
+            table.insert(matches, match)
 
+        elseif matchNum == 3 then
             -- go backwards from end of last row by matchNum
             for x = 8, 8 - matchNum + 1, -1 do
                 table.insert(match, self.tiles[y][x])
@@ -117,13 +126,16 @@ function Board:calculateMatches()
             else
                 colorToMatch = self.tiles[y][x].color
 
-                if matchNum >= 3 then
-                    local match = {}
-
+                local match = {}
+                if matchNum >= 4 then
+                    for x2 = 8, 1, -1 do
+                        table.insert(match, self.tiles[y][x2])
+                    end
+                    table.insert(matches, match)
+               elseif matchNum == 3 then
                     for y2 = y - 1, y - matchNum, -1 do
                         table.insert(match, self.tiles[y2][x])
                     end
-
                     table.insert(matches, match)
                 end
 
@@ -137,9 +149,13 @@ function Board:calculateMatches()
         end
 
         -- account for the last column ending with a match
-        if matchNum >= 3 then
-            local match = {}
-
+        local match = {}
+        if matchNum >= 4 then
+            for y = 8, 1, -1 do
+                table.insert(match, self.tiles[y][x])   
+            end
+            table.insert(matches, match)
+        elseif matchNum == 3 then
             -- go backwards from end of last row by matchNum
             for y = 8, 8 - matchNum + 1, -1 do
                 table.insert(match, self.tiles[y][x])
@@ -163,9 +179,6 @@ end
 function Board:removeMatches()
     for k, match in pairs(self.matches) do
         for k, tile in pairs(match) do
-            if # match >= 4 then
-                self.tiles[tile.gridY][tile.gridX] = Tile(tile.gridX, tile.gridY, 18, 1)
-            end
             self.tiles[tile.gridY][tile.gridX] = nil
         end
     end
@@ -278,7 +291,7 @@ function Board:getFallingTiles()
             -- if the tile is nil, we need to add a new one
             if not tile then
                 -- new tile with random color and variety
-                local tile = Tile(x, y, math.random(18), self.level * 1)
+                local tile = Tile(x, y, math.random(9), math.random(self.level * 1))
                 tile.y = -32
                 self.tiles[y][x] = tile
 

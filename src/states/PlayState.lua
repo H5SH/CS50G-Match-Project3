@@ -73,7 +73,11 @@ end
 function PlayState:update(dt)
 
     if not (self.board:matchesAvailable()) then
-        self.board = Board(VIRTUAL_WIDTH - 272, 16)
+        local newBoard = Board(VIRTUAL_WIDTH - 272, 16, self.level)
+        Timer.after(0.1, 
+        function ()
+            self.board = newBoard
+        end)
     end
 
     if love.keyboard.wasPressed('escape') then
